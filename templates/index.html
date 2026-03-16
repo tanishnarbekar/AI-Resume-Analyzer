@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ResumeIQ — AI Resume Analyzer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body>
+
+  <!-- Background grid -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <header>
+    <div class="logo">Resume<span>IQ</span></div>
+    <nav>
+      <span class="badge">AI-Powered</span>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-tag">✦ NLP · Skill Matching · ATS Analysis</div>
+      <h1>Know exactly <em>why</em><br/>your resume gets rejected</h1>
+      <p class="hero-sub">Upload your resume. Get an instant AI-powered score, skill gap analysis, and actionable suggestions to land your dream job.</p>
+    </section>
+
+    <!-- Upload Card -->
+    <section class="upload-section">
+      <div class="card upload-card" id="uploadCard">
+        <form id="analyzeForm">
+
+          <!-- Drop Zone -->
+          <div class="dropzone" id="dropzone">
+            <div class="drop-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 16V4m0 0L8 8m4-4l4 4"/>
+                <path d="M20 16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2"/>
+              </svg>
+            </div>
+            <p class="drop-title">Drop your resume here</p>
+            <p class="drop-sub">PDF, DOCX, or TXT · Max 5MB</p>
+            <label class="btn-upload" for="resumeFile">Browse File</label>
+            <input type="file" id="resumeFile" name="resume" accept=".pdf,.docx,.txt" hidden/>
+          </div>
+
+          <!-- File Preview -->
+          <div class="file-preview hidden" id="filePreview">
+            <div class="file-icon">📄</div>
+            <div class="file-info">
+              <span class="file-name" id="fileName">—</span>
+              <span class="file-size" id="fileSize">—</span>
+            </div>
+            <button type="button" class="file-remove" id="removeFile">✕</button>
+          </div>
+
+          <!-- Job Role -->
+          <div class="field">
+            <label>Target Job Role</label>
+            <div class="select-wrap">
+              <select name="job_role" id="jobRole">
+                <option value="data_scientist">Data Scientist</option>
+                <option value="ai_engineer">AI Engineer</option>
+                <option value="ml_engineer">ML Engineer</option>
+                <option value="backend_developer">Backend Developer</option>
+                <option value="frontend_developer">Frontend Developer</option>
+                <option value="fullstack_developer">Full Stack Developer</option>
+                <option value="data_analyst">Data Analyst</option>
+                <option value="devops_engineer">DevOps Engineer</option>
+              </select>
+              <span class="select-arrow">▾</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-analyze" id="analyzeBtn">
+            <span class="btn-text">Analyze Resume</span>
+            <span class="btn-spinner hidden" id="spinner">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="31.4" stroke-dashoffset="10"/></svg>
+              Analyzing...
+            </span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results hidden" id="results">
+
+      <!-- Score Hero -->
+      <div class="score-hero">
+        <div class="score-ring-wrap">
+          <svg class="score-ring" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="50" class="ring-bg"/>
+            <circle cx="60" cy="60" r="50" class="ring-fill" id="ringFill"
+                    stroke-dasharray="314" stroke-dashoffset="314"/>
+          </svg>
+          <div class="score-inner">
+            <div class="score-number" id="scoreNumber">0</div>
+            <div class="score-label">/ 100</div>
+          </div>
+        </div>
+        <div class="score-meta">
+          <div class="grade-badge" id="gradeBadge">—</div>
+          <h2 id="scoreHeading">Analyzing...</h2>
+          <p id="roleLabel">—</p>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num" id="statRequired">—</div>
+          <div class="stat-lbl">Core Skills Matched</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statBonus">—</div>
+          <div class="stat-lbl">Bonus Skills Found</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statSections">—</div>
+          <div class="stat-lbl">Resume Sections</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statWords">—</div>
+          <div class="stat-lbl">Word Count</div>
+        </div>
+      </div>
+
+      <!-- Two Column Grid -->
+      <div class="results-grid">
+
+        <!-- Matched Skills -->
+        <div class="card result-card">
+          <h3>✅ Matched Core Skills</h3>
+          <div class="skill-list" id="matchedSkills"></div>
+        </div>
+
+        <!-- Missing Skills -->
+        <div class="card result-card">
+          <h3>❌ Missing Core Skills</h3>
+          <div class="skill-list" id="missingSkills"></div>
+        </div>
+
+        <!-- Bonus Skills -->
+        <div class="card result-card">
+          <h3>⭐ Bonus Skills Found</h3>
+          <div class="skill-list" id="bonusSkills"></div>
+        </div>
+
+        <!-- Keyword Density -->
+        <div class="card result-card">
+          <h3>🔍 Keyword Density (ATS)</h3>
+          <div class="density-list" id="densityList"></div>
+        </div>
+
+      </div>
+
+      <!-- Suggestions -->
+      <div class="card suggestions-card">
+        <h3>💼 Improvement Suggestions</h3>
+        <div id="suggestionsList"></div>
+      </div>
+
+      <!-- Sections Found -->
+      <div class="card sections-card">
+        <h3>📋 Resume Sections Detected</h3>
+        <div class="sections-list" id="sectionsList"></div>
+      </div>
+
+      <!-- Re-analyze -->
+      <div class="reanalyze-wrap">
+        <button class="btn-reanalyze" id="reanalyzeBtn">↩ Analyze Another Resume</button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <p>ResumeIQ · Built with Python, Flask & NLP · Final Year Project</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

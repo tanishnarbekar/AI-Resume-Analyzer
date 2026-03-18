@@ -705,5 +705,3 @@ This project is open-source and available under the [MIT License](LICENSE).
 If you found this project helpful, please give it a **star ⭐** — it means a lot to us!
 
 ---
-
-*Built with ❤️ as a Final Year Project by Team ResumeIQ*

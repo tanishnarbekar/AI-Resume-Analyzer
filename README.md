@@ -682,17 +682,6 @@ This project implements a **Rule-Based Expert System** — a classical branch of
 - A weighted decision algorithm for scoring
 - Rule-driven suggestions based on detected skill gaps
 
----
-
-## 👨‍💻 Team
-
-| Name | Role |
-|---|---|
-| **Tanish Narbekar** | Backend Development, NLP Engine |
-| **Sahil Sutar** | Frontend Development, UI Design |
-| **Dattatray Kulkarni** | System Design, Testing & Documentation |
-
----
 
 ## 📄 License
 

@@ -682,6 +682,8 @@ This project implements a **Rule-Based Expert System** — a classical branch of
 - A weighted decision algorithm for scoring
 - Rule-driven suggestions based on detected skill gaps
 
+---
+
 
 ## 📄 License
 
